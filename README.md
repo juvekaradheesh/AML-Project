@@ -1,8 +1,11 @@
 
 # AML-Project
 **Virginia Tech** Fall 2019
+
 **Advanced Machine Learning** Course Project
+
 by *Adheesh Juvekar, Kunal Joshi, Rahul Iyer*
+
 
 ## Our Job
 We aim to reproduce the research done by Diederik et al. in Adam[^1] paper. We are testing the results obtained by them on CIFAR dataset with a different CNN architecture. More details to be added.

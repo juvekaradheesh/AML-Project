@@ -1,11 +1,7 @@
-""" 
-REFERENCE CODE
-
-from base.base_model import BaseModel
 from keras.models import Sequential
 from keras.layers import Input, Dense, Conv2D, MaxPooling2D, Dropout, Flatten
 
-class ConvMnistModel(BaseModel):
+class ConvNet:
     def __init__(self, config):
         self.config = config
         self.model = None
@@ -27,7 +23,7 @@ class ConvMnistModel(BaseModel):
               loss='sparse_categorical_crossentropy',
               optimizer=self.config.model.optimizer,
               metrics=['accuracy'])
-
+    
     def save(self, checkpoint_path):
         if self.model is None:
             raise Exception("You have to build the model first.")
@@ -43,17 +39,3 @@ class ConvMnistModel(BaseModel):
         print("Loading model checkpoint {} ...\n".format(checkpoint_path))
         self.model.load_weights(checkpoint_path)
         print("Model loaded")
-"""
-
-class ConvAdaGrad:
-    def __init__(self):
-        pass
-
-    def build_model(self):
-        pass
-    
-    def save(self):
-        pass
-    
-    def load(self):
-        pass
