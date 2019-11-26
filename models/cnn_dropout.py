@@ -1,7 +1,10 @@
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Flatten
+from keras.layers import Conv2D, MaxPooling2D
 
 class ConvNetDropout:
-    def __init__(self, optimizer, num_classes):
-        self.optimizer = optimizer
+    def __init__(self, config):
+        self.config = config
         self.model = None
         self.num_classes = num_classes
         self.build_model()
@@ -27,13 +30,11 @@ class ConvNetDropout:
         self.model.add(Dense(512))
         self.model.add(Activation('relu'))
         self.model.add(Dropout(0.5))
-        self.model.add(Dense(self.num_classes))
+        self.model.add(Dense(self.config.num_classes))
         self.model.add(Activation('softmax'))
 
-
-# Let's train the model 
         self.model.compile(loss='categorical_crossentropy',
-              optimizer=self.optimizer,
+              optimizer=self.config.optimizer,
               metrics=['accuracy'])
 
 

@@ -1,31 +1,19 @@
-"""
-REFERENCE CODE
+from keras.datasets import cifar10
+import keras.utils
 
-from base.base_data_loader import BaseDataLoader
-from keras.datasets import mnist
-
-class ConvMnistDataLoader(BaseDataLoader):
-
+class CifarDataLoader:
     def __init__(self, config):
         self.config = config
-        (self.X_train, self.y_train), (self.X_test, self.y_test) = mnist.load_data()
-        self.X_train = self.X_train.reshape((-1, 28, 28, 1))
-        self.X_test = self.X_test.reshape((-1, 28, 28, 1))
+        (self.x_train, self.y_train), (self.x_test, self.y_test) = cifar10.load_data()
+        self.y_train = keras.utils.to_categorical(self.y_train, self.config.num_classes)
+        self.y_test = keras.utils.to_categorical(self.y_test, self.config.num_classes)
+        self.x_train = self.x_train.astype('float32')
+        self.x_test = self.x_test.astype('float32')
+        self.x_train /= 255
+        self.x_test /= 255
 
     def get_train_data(self):
-        return self.X_train, self.y_train
+        return self.x_train, self.y_train
 
     def get_test_data(self):
-        return self.X_test, self.y_test
-
-"""
-
-class ConvCifarDataLoader:
-    def __init__(self):
-        pass
-
-    def get_train_data(self):
-        pass
-
-    def get_test_data(self):
-        pass
+        return self.x_test, self.y_test

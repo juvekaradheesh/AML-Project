@@ -8,7 +8,9 @@ from keras.callbacks import ModelCheckpoint, TensorBoard
 
 class SimpleMnistModelTrainer(BaseTrain):
     def __init__(self, model, data, config):
-        super(SimpleMnistModelTrainer, self).__init__(model, data, config)
+        self.model = model
+        self.data = data
+        self.config = config
         self.callbacks = []
         self.loss = []
         self.acc = []
@@ -58,10 +60,36 @@ class SimpleMnistModelTrainer(BaseTrain):
 """
 
 class ModelTrainer:
-    def __init__(self, model, data, config):
+    def __init__(self, model, train_data, validation_data, config):
         self.model = model
-        self.data = data
+        self.train_data = train_data
+        self.validation_data = validation_data
         self.config = config
+        self.loss = []
+        self.acc = []
+        self.val_loss = []
+        self.val_acc = []
 
     def train(self):
-        raise NotImplementedError
+        history = self.model.fit(
+            self.train_data[0], self.train_data[1],
+            batch_size=self.config.batch_size,
+            epochs=self.config.epochs,
+            validation_data=self.validation_data,
+            shuffle=True)
+
+        self.loss.extend(history.history['loss'])
+        self.acc.extend(history.history['acc'])
+        self.val_loss.extend(history.history['val_loss'])
+        self.val_acc.extend(history.history['val_acc'])
+    
+    def get_trained_model(self):
+        return self.model
+    
+    def save(self, checkpoint_path):
+        if self.model is None:
+            raise Exception("You have to build the model first.")
+
+        print("Saving model...")
+        self.model.save_weights(checkpoint_path)
+        print("Model saved"))
