@@ -1,2 +1,5 @@
 saved_models/
 __pycache__/
+.vscode/
+.ipynb_checkpoints/
+results.txt

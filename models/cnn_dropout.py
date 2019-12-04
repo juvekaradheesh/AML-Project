@@ -6,13 +6,12 @@ class ConvNetDropout:
     def __init__(self, config):
         self.config = config
         self.model = None
-        self.num_classes = num_classes
         self.build_model()
 
     def build_model(self):
         self.model = Sequential()
         self.model.add(Conv2D(32, (3, 3), padding='same',
-                        input_shape=x_train.shape[1:]))
+                        input_shape=self.config.input_shape))
         self.model.add(Activation('relu'))
         self.model.add(Conv2D(32, (3, 3)))
         self.model.add(Activation('relu'))
@@ -34,8 +33,8 @@ class ConvNetDropout:
         self.model.add(Activation('softmax'))
 
         self.model.compile(loss='categorical_crossentropy',
-              optimizer=self.config.optimizer,
-              metrics=['accuracy'])
+            optimizer=self.config.optimizer,
+            metrics=['accuracy'])
 
 
     def save(self, checkpoint_path):
@@ -53,3 +52,6 @@ class ConvNetDropout:
         print("Loading model checkpoint {} ...\n".format(checkpoint_path))
         self.model.load_weights(checkpoint_path)
         print("Model loaded")
+    
+    def get_model(self):
+        return self.model
