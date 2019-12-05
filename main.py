@@ -1,8 +1,7 @@
 import numpy as np
 import os
 import random
-import tensorflow as tf
-from keras import backend as K
+import datetime
 
 from models.cnn import ConvNet
 from models.cnn_dropout import ConvNetDropout
@@ -27,6 +26,7 @@ SEED = 0
 def main():
 
     f = open(RESULTS_FILE, "a")
+    f.write("Results from " + str(datetime.datetime.now()) + "\n")
     
     # Load config
     config = Config(config_default)
@@ -37,19 +37,11 @@ def main():
     validation_data = load_data.get_test_data()
 
     optimizers = ['adam', 'adagrad', 'sgd']
+    # optimizers = ['adam']
 
     # Loop over multiple optimizers
     # Without dropout
     for optimizer in optimizers:
-
-        # Set seed value
-        os.environ['PYTHONHASHSEED']=str(SEED)
-        random.seed(SEED)
-        np.random.seed(SEED)
-        tf.compat.v1.set_random_seed(SEED)
-        session_conf = tf.compat.v1.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
-        sess = tf.compat.v1.Session(graph=tf.compat.v1.get_default_graph(), config=session_conf)
-        K.set_session(sess)
 
         # Set optimizer
         config_default['optimizer'] = optimizer
@@ -85,15 +77,6 @@ def main():
     # Loop over multiple optimizers
     # With dropout
     for optimizer in optimizers:
-
-        # Set seed value
-        os.environ['PYTHONHASHSEED']=str(SEED)
-        random.seed(SEED)
-        np.random.seed(SEED)
-        tf.set_random_seed(SEED)
-        session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
-        sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
-        K.set_session(sess)
         
         # Set optimizer
         config_default['optimizer'] = optimizer
@@ -128,7 +111,7 @@ def main():
 
 
 
-        
+    f.write("\n\n\n")
     f.close()
 if __name__ == '__main__':
     main()
